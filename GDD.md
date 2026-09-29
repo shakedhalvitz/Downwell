@@ -99,14 +99,16 @@ stateDiagram-v2
 ---
 
 ## 6. Art & Audio
+| Asset | Variants / frames | Source & licence | Use |
+| ------ | ------ | ------ | ------ |
+| 2D Pixel Art Tilesets | Multiple tiles | Itch.io | Backgrounds, Platforms |
+| Hooded Protagonist | Sprite sheet (8 animations) | [**Penzilla**](https://penzilla.itch.io/hooded-protagonist) (Itch.io) - Free for non-commercial use, requires credit | Player character |
+| Enemy Sprites | TBD | Itch.io | Enemies |
 
-| Asset | Source & licence | Use |
-|---|---|---|
-| 2D Pixel Art Tilesets (Mine) | Itch.io | Backgrounds, Platforms |
-| 2D Character & Enemy Sprites | Itch.io | Player character, Enemies |
-
+**Licence note:** The Hooded Protagonist asset is free for private/educational use as per the creator's terms, and credit is provided to Penzilla Design. For a public/commercial build, the required commercial fee would be paid.
 **Technical art rules:** Point (no filter) import, PPU 100, single SpriteAtlas. Sorting layers: Background → Decor → Platforms → Enemies → Player → UI.
 
+![Player Character](Images/Player_SpriteSheet.png)
 ---
 
 ## 7. Technical Design
