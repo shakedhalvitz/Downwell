@@ -9,7 +9,7 @@
 | **Engine / Unity version** | Unity 6 (6000.3.22f1), URP, 2D |
 | **Orientation & reference resolution** | Portrait, 1080 × 1920 reference |
 | **Expected session length** | ~ 2 minutes |
-| **Document version** | v0.1 — 2026-09-29 |
+| **Document version** | v0.1.1 — 2026-09-29 |
 
 ---
 
@@ -27,8 +27,8 @@ The player controls a character falling endlessly down a vertically scrolling mi
 
 ## 2. Reference & Inspiration
 
-- **Primary reference:** *Downwell*. Taking: The falling mechanic, contextual jump/shoot button, enemy combo system. Not taking: The monochrome art style and complex weapon upgrades.
-- **Secondary reference:** *Icy Tower*. Taking: The platforming layout and edge-wrapping (optional). Not taking: The upward direction.
+- **Primary reference:** *Downwell*. Taking: The core falling gameplay, contextual jump/shoot button, enemy combo system, and weapon upgrades (adapted to be collected continuously during the endless fall rather than strictly between levels). Not taking: The monochrome art style.
+- [**Downwell**](https://www.youtube.com/watch?v=kY83H8BdxhI) - Extended Gameplay Video
 
 ---
 
@@ -160,4 +160,4 @@ graph TD
 
 | Version | Date | Change |
 |---|---|---|
-| v0.1 | 2026-09-29 | Initial draft |
+| v0.1.1 | 2026-09-29 | Inspiration fix |
