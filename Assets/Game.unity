@@ -251,8 +251,8 @@ Transform:
   m_GameObject: {fileID: 39010945}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -1, z: -0}
-  m_LocalScale: {x: 5, y: 0.1, z: 1}
+  m_LocalPosition: {x: -0.13, y: -0.51, z: -0}
+  m_LocalScale: {x: 1.7353687, y: 0.3201001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -805,9 +805,10 @@ MonoBehaviour:
   - {fileID: 3310266483026807207, guid: e0a02fdb057a90845afd98f61af50183, type: 3}
   - {fileID: 3621283600960770541, guid: 84ae94393cd6c1e4e9b439cf1e409062, type: 3}
   - {fileID: 4785942266227510441, guid: 2782a9e87e73bfc4b8885911c16b4b39, type: 3}
-  startingChunks: 3
-  chunkHeight: 10
   playerTransform: {fileID: 0}
+  chunkHeight: 10
+  chunksAhead: 4
+  destroyDistance: 25
 --- !u!4 &622373534
 Transform:
   m_ObjectHideFlags: 0

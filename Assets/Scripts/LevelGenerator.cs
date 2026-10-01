@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -5,42 +6,57 @@ public class LevelGenerator : MonoBehaviour
     [Header("Chunk Prefabs")]
     public GameObject[] chunkPrefabs;
 
-    [Header("Generation Settings")]
-    public int startingChunks = 3;
-    public float chunkHeight = 10f;
-
-    // הנה המשתנה שהיה חסר!
+    [Header("Player Tracking")]
     public Transform playerTransform;
 
+    [Header("Settings")]
+    public float chunkHeight = 10f;
+    public int chunksAhead = 3;
+
     private float currentSpawnY = 0f;
+    private List<GameObject> activeChunks = new List<GameObject>();
 
     void Start()
     {
-        for (int i = 0; i < startingChunks; i++)
+        for (int i = 0; i < chunksAhead + 2; i++)
         {
-            SpawnNextChunk();
+            SpawnChunk();
         }
     }
 
     void Update()
     {
-        // מוודא שהשחקן קיים כדי למנוע שגיאות
         if (playerTransform == null) return;
 
-        // בודק מול השחקן מתי לייצר את החדר הבא
-        if (playerTransform.position.y - currentSpawnY < (chunkHeight * 2))
+        if (playerTransform.position.y < currentSpawnY + (chunksAhead * chunkHeight))
         {
-            SpawnNextChunk();
+            SpawnChunk();
+            CleanupOldChunks();
         }
     }
 
-    void SpawnNextChunk()
+    void SpawnChunk()
     {
-        int randomIndex = Random.Range(0, chunkPrefabs.Length);
-        GameObject chunkToSpawn = chunkPrefabs[randomIndex];
+        if (chunkPrefabs == null || chunkPrefabs.Length == 0) return;
 
-        Instantiate(chunkToSpawn, new Vector3(0, currentSpawnY, 0), Quaternion.identity);
+        int randomIndex = Random.Range(0, chunkPrefabs.Length);
+        GameObject selectedPrefab = chunkPrefabs[randomIndex];
+
+        Vector3 spawnPosition = new Vector3(0f, currentSpawnY, 0f);
+        GameObject newChunk = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
+
+        activeChunks.Add(newChunk);
 
         currentSpawnY -= chunkHeight;
+    }
+
+    void CleanupOldChunks()
+    {
+        if (activeChunks.Count > 5)
+        {
+            GameObject oldChunk = activeChunks[0];
+            activeChunks.RemoveAt(0);
+            Destroy(oldChunk);
+        }
     }
 }
