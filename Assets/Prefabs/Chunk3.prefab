@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5061134214054217174}
   - component: {fileID: 1363802372311005004}
+  - component: {fileID: 8494605905948538274}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground Additional 04
   m_TagString: Untagged
@@ -91,6 +92,102 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &8494605905948538274
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479411535782413863}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 3.2}
+    newSize: {x: 3.2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.37, y: -0.87}
+      - {x: 1.3299999, y: -0.78999996}
+      - {x: 1.28, y: -0.74}
+      - {x: 1.12, y: -0.63}
+      - {x: 1.12, y: -0.47}
+      - {x: 1.03, y: -0.39}
+      - {x: 0.84, y: -0.32}
+      - {x: 0.74, y: -0.31}
+      - {x: 0.95, y: -0.17999999}
+      - {x: 1.05, y: 0.04}
+      - {x: 1.06, y: 0.14999999}
+      - {x: 1.05, y: 0.39}
+      - {x: 1.0799999, y: 0.42999998}
+      - {x: 1.12, y: 0.48}
+      - {x: 1.17, y: 0.55}
+      - {x: 1.35, y: 0.63}
+      - {x: 1.42, y: 0.69}
+      - {x: 1.51, y: 0.88}
+      - {x: 1.49, y: 1.14}
+      - {x: 1.4499999, y: 1.1999999}
+      - {x: 1.39, y: 1.36}
+      - {x: 1.35, y: 1.4499999}
+      - {x: -1.28, y: 1.4499999}
+      - {x: -1.39, y: 1.37}
+      - {x: -1.4499999, y: 1.26}
+      - {x: -1.43, y: 0.94}
+      - {x: -1.3199999, y: 0.74}
+      - {x: -1.3, y: 0.71}
+      - {x: -1.23, y: 0.64}
+      - {x: -1.14, y: 0.57}
+      - {x: -0.90999997, y: 0.26}
+      - {x: -1, y: 0.12}
+      - {x: -1.03, y: 0.02}
+      - {x: -1.01, y: -0.19999999}
+      - {x: -0.90999997, y: -0.32}
+      - {x: -0.74, y: -0.42999998}
+      - {x: -0.65999997, y: -0.61}
+      - {x: -0.71, y: -0.88}
+      - {x: -0.93, y: -0.95}
+      - {x: -1.04, y: -1.04}
+      - {x: -1.18, y: -1.28}
+      - {x: -1.48, y: -1.3399999}
+      - {x: -1.56, y: -1.4499999}
+      - {x: -1.5699999, y: -1.49}
+      - {x: -1.5699999, y: -1.5999999}
+      - {x: 1.4599999, y: -1.5999999}
+      - {x: 1.49, y: -1.56}
+      - {x: 1.51, y: -1.4699999}
+      - {x: 1.51, y: -1.26}
+  m_UseDelaunayMesh: 1
 --- !u!1 &712794022751016764
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7428286006905707965}
   - component: {fileID: 1153748265552522148}
+  - component: {fileID: 445815667100931253}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground Additional 04 (1)
   m_TagString: Untagged
@@ -182,6 +280,102 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &445815667100931253
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712794022751016764}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 3.2}
+    newSize: {x: 3.2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.37, y: -0.87}
+      - {x: 1.3299999, y: -0.78999996}
+      - {x: 1.28, y: -0.74}
+      - {x: 1.12, y: -0.63}
+      - {x: 1.12, y: -0.47}
+      - {x: 1.03, y: -0.39}
+      - {x: 0.84, y: -0.32}
+      - {x: 0.74, y: -0.31}
+      - {x: 0.95, y: -0.17999999}
+      - {x: 1.05, y: 0.04}
+      - {x: 1.06, y: 0.14999999}
+      - {x: 1.05, y: 0.39}
+      - {x: 1.0799999, y: 0.42999998}
+      - {x: 1.12, y: 0.48}
+      - {x: 1.17, y: 0.55}
+      - {x: 1.35, y: 0.63}
+      - {x: 1.42, y: 0.69}
+      - {x: 1.51, y: 0.88}
+      - {x: 1.49, y: 1.14}
+      - {x: 1.4499999, y: 1.1999999}
+      - {x: 1.39, y: 1.36}
+      - {x: 1.35, y: 1.4499999}
+      - {x: -1.28, y: 1.4499999}
+      - {x: -1.39, y: 1.37}
+      - {x: -1.4499999, y: 1.26}
+      - {x: -1.43, y: 0.94}
+      - {x: -1.3199999, y: 0.74}
+      - {x: -1.3, y: 0.71}
+      - {x: -1.23, y: 0.64}
+      - {x: -1.14, y: 0.57}
+      - {x: -0.90999997, y: 0.26}
+      - {x: -1, y: 0.12}
+      - {x: -1.03, y: 0.02}
+      - {x: -1.01, y: -0.19999999}
+      - {x: -0.90999997, y: -0.32}
+      - {x: -0.74, y: -0.42999998}
+      - {x: -0.65999997, y: -0.61}
+      - {x: -0.71, y: -0.88}
+      - {x: -0.93, y: -0.95}
+      - {x: -1.04, y: -1.04}
+      - {x: -1.18, y: -1.28}
+      - {x: -1.48, y: -1.3399999}
+      - {x: -1.56, y: -1.4499999}
+      - {x: -1.5699999, y: -1.49}
+      - {x: -1.5699999, y: -1.5999999}
+      - {x: 1.4599999, y: -1.5999999}
+      - {x: 1.49, y: -1.56}
+      - {x: 1.51, y: -1.4699999}
+      - {x: 1.51, y: -1.26}
+  m_UseDelaunayMesh: 1
 --- !u!1 &1227582185057021921
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2035991749746599948}
   - component: {fileID: 5291597162796088766}
+  - component: {fileID: 8946388502215450192}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground 09
   m_TagString: Untagged
@@ -273,6 +468,60 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &8946388502215450192
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227582185057021921}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.17999999, y: 0.64}
+      - {x: -0.34, y: 0.049999997}
+      - {x: -0.34, y: -0.25}
+      - {x: -0.29999998, y: -0.48}
+      - {x: -0.17, y: -0.64}
+      - {x: 0.64, y: -0.64}
+      - {x: 0.64, y: 0.64}
+  m_UseDelaunayMesh: 1
 --- !u!1 &1956832580885284208
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6011995003295486552}
   - component: {fileID: 1850007643622974950}
+  - component: {fileID: 6512907483942572626}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground Additional 04 (2)
   m_TagString: Untagged
@@ -364,6 +614,102 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &6512907483942572626
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956832580885284208}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 3.2}
+    newSize: {x: 3.2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.37, y: -0.87}
+      - {x: 1.3299999, y: -0.78999996}
+      - {x: 1.28, y: -0.74}
+      - {x: 1.12, y: -0.63}
+      - {x: 1.12, y: -0.47}
+      - {x: 1.03, y: -0.39}
+      - {x: 0.84, y: -0.32}
+      - {x: 0.74, y: -0.31}
+      - {x: 0.95, y: -0.17999999}
+      - {x: 1.05, y: 0.04}
+      - {x: 1.06, y: 0.14999999}
+      - {x: 1.05, y: 0.39}
+      - {x: 1.0799999, y: 0.42999998}
+      - {x: 1.12, y: 0.48}
+      - {x: 1.17, y: 0.55}
+      - {x: 1.35, y: 0.63}
+      - {x: 1.42, y: 0.69}
+      - {x: 1.51, y: 0.88}
+      - {x: 1.49, y: 1.14}
+      - {x: 1.4499999, y: 1.1999999}
+      - {x: 1.39, y: 1.36}
+      - {x: 1.35, y: 1.4499999}
+      - {x: -1.28, y: 1.4499999}
+      - {x: -1.39, y: 1.37}
+      - {x: -1.4499999, y: 1.26}
+      - {x: -1.43, y: 0.94}
+      - {x: -1.3199999, y: 0.74}
+      - {x: -1.3, y: 0.71}
+      - {x: -1.23, y: 0.64}
+      - {x: -1.14, y: 0.57}
+      - {x: -0.90999997, y: 0.26}
+      - {x: -1, y: 0.12}
+      - {x: -1.03, y: 0.02}
+      - {x: -1.01, y: -0.19999999}
+      - {x: -0.90999997, y: -0.32}
+      - {x: -0.74, y: -0.42999998}
+      - {x: -0.65999997, y: -0.61}
+      - {x: -0.71, y: -0.88}
+      - {x: -0.93, y: -0.95}
+      - {x: -1.04, y: -1.04}
+      - {x: -1.18, y: -1.28}
+      - {x: -1.48, y: -1.3399999}
+      - {x: -1.56, y: -1.4499999}
+      - {x: -1.5699999, y: -1.49}
+      - {x: -1.5699999, y: -1.5999999}
+      - {x: 1.4599999, y: -1.5999999}
+      - {x: 1.49, y: -1.56}
+      - {x: 1.51, y: -1.4699999}
+      - {x: 1.51, y: -1.26}
+  m_UseDelaunayMesh: 1
 --- !u!1 &3310266483026807207
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,6 +761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 572176442284163399}
   - component: {fileID: 6982412422405663064}
+  - component: {fileID: 3036978259506013905}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground 13 (1)
   m_TagString: Untagged
@@ -496,6 +843,62 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &3036978259506013905
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918184536995306413}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.099999994, y: 0.45999998}
+      - {x: 0.14999999, y: 0.55}
+      - {x: 0.14999999, y: 0.64}
+      - {x: -0.64, y: 0.64}
+      - {x: -0.64, y: -0.64}
+      - {x: 0.14999999, y: -0.64}
+      - {x: 0.31, y: -0.48999998}
+      - {x: 0.34, y: -0.25}
+      - {x: 0.34, y: -0.02}
+  m_UseDelaunayMesh: 1
 --- !u!1 &4244632226462825615
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,6 +909,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3824964459744718645}
   - component: {fileID: 1784940427727568847}
+  - component: {fileID: 2668022304642664242}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground 13
   m_TagString: Untagged
@@ -587,6 +991,62 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &2668022304642664242
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4244632226462825615}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.099999994, y: 0.45999998}
+      - {x: 0.14999999, y: 0.55}
+      - {x: 0.14999999, y: 0.64}
+      - {x: -0.64, y: 0.64}
+      - {x: -0.64, y: -0.64}
+      - {x: 0.14999999, y: -0.64}
+      - {x: 0.31, y: -0.48999998}
+      - {x: 0.34, y: -0.25}
+      - {x: 0.34, y: -0.02}
+  m_UseDelaunayMesh: 1
 --- !u!1 &4557609362802871622
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,6 +1057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5111474429828432717}
   - component: {fileID: 4907174512731708096}
+  - component: {fileID: 3048553886907748587}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground 09
   m_TagString: Untagged
@@ -678,6 +1139,60 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &3048553886907748587
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4557609362802871622}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.17999999, y: 0.64}
+      - {x: -0.34, y: 0.049999997}
+      - {x: -0.34, y: -0.25}
+      - {x: -0.29999998, y: -0.48}
+      - {x: -0.17, y: -0.64}
+      - {x: 0.64, y: -0.64}
+      - {x: 0.64, y: 0.64}
+  m_UseDelaunayMesh: 1
 --- !u!1 &5252896142712098285
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,6 +1203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4699981049726352200}
   - component: {fileID: 60423509216341902}
+  - component: {fileID: 6849550927593020761}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground 09 (1)
   m_TagString: Untagged
@@ -769,6 +1285,60 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &6849550927593020761
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252896142712098285}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.17999999, y: 0.64}
+      - {x: -0.34, y: 0.049999997}
+      - {x: -0.34, y: -0.25}
+      - {x: -0.29999998, y: -0.48}
+      - {x: -0.17, y: -0.64}
+      - {x: 0.64, y: -0.64}
+      - {x: 0.64, y: 0.64}
+  m_UseDelaunayMesh: 1
 --- !u!1 &5260732084276076447
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +1349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4104721813717560528}
   - component: {fileID: 3411257225008406605}
+  - component: {fileID: 8314069289748434013}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground Additional 01
   m_TagString: Untagged
@@ -860,6 +1431,94 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &8314069289748434013
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5260732084276076447}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 3.2}
+    newSize: {x: 3.2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.3299999, y: -1.13}
+      - {x: 1.26, y: -0.74}
+      - {x: 1.39, y: -0.44}
+      - {x: 1.4399999, y: -0.26}
+      - {x: 1.4399999, y: 0.01}
+      - {x: 1.29, y: 0.17999999}
+      - {x: 1.23, y: 0.41}
+      - {x: 1.09, y: 0.52}
+      - {x: 1.13, y: 0.71999997}
+      - {x: 1.3199999, y: 0.81}
+      - {x: 1.38, y: 0.88}
+      - {x: 1.42, y: 0.94}
+      - {x: 1.48, y: 1.24}
+      - {x: 1.5999999, y: 1.48}
+      - {x: 1.5999999, y: 1.5999999}
+      - {x: -1.5999999, y: 1.5999999}
+      - {x: -1.5999999, y: 1.4599999}
+      - {x: -1.5699999, y: 1.3299999}
+      - {x: -1.48, y: 1.16}
+      - {x: -1.4399999, y: 1.12}
+      - {x: -1.31, y: 0.95}
+      - {x: -1.37, y: 0.88}
+      - {x: -1.36, y: 0.71}
+      - {x: -1.5, y: 0.69}
+      - {x: -1.5999999, y: 0.51}
+      - {x: -1.5999999, y: 0.5}
+      - {x: -1.5799999, y: 0.39999998}
+      - {x: -1.49, y: 0.25}
+      - {x: -1.5, y: 0.08}
+      - {x: -1.5, y: -0.06}
+      - {x: -1.4499999, y: -0.34}
+      - {x: -1.3399999, y: -0.48}
+      - {x: -1.3299999, y: -0.7}
+      - {x: -1.38, y: -1.03}
+      - {x: -1.51, y: -1.3}
+      - {x: -1.5799999, y: -1.43}
+      - {x: -1.5999999, y: -1.49}
+      - {x: -1.5999999, y: -1.5999999}
+      - {x: 1.5999999, y: -1.5999999}
+      - {x: 1.5999999, y: -1.5}
+      - {x: 1.4, y: -1.27}
+  m_UseDelaunayMesh: 1
 --- !u!1 &5895394696578304251
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,6 +1529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6505103233565186529}
   - component: {fileID: 3733601115312373439}
+  - component: {fileID: 6065695160096753289}
   m_Layer: 0
   m_Name: Plague_Town_2D_Platformer_Tileset_Platformer - Ground Additional 01 (1)
   m_TagString: Untagged
@@ -951,3 +1611,91 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!60 &6065695160096753289
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5895394696578304251}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 3.2}
+    newSize: {x: 3.2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.3299999, y: -1.13}
+      - {x: 1.26, y: -0.74}
+      - {x: 1.39, y: -0.44}
+      - {x: 1.4399999, y: -0.26}
+      - {x: 1.4399999, y: 0.01}
+      - {x: 1.29, y: 0.17999999}
+      - {x: 1.23, y: 0.41}
+      - {x: 1.09, y: 0.52}
+      - {x: 1.13, y: 0.71999997}
+      - {x: 1.3199999, y: 0.81}
+      - {x: 1.38, y: 0.88}
+      - {x: 1.42, y: 0.94}
+      - {x: 1.48, y: 1.24}
+      - {x: 1.5999999, y: 1.48}
+      - {x: 1.5999999, y: 1.5999999}
+      - {x: -1.5999999, y: 1.5999999}
+      - {x: -1.5999999, y: 1.4599999}
+      - {x: -1.5699999, y: 1.3299999}
+      - {x: -1.48, y: 1.16}
+      - {x: -1.4399999, y: 1.12}
+      - {x: -1.31, y: 0.95}
+      - {x: -1.37, y: 0.88}
+      - {x: -1.36, y: 0.71}
+      - {x: -1.5, y: 0.69}
+      - {x: -1.5999999, y: 0.51}
+      - {x: -1.5999999, y: 0.5}
+      - {x: -1.5799999, y: 0.39999998}
+      - {x: -1.49, y: 0.25}
+      - {x: -1.5, y: 0.08}
+      - {x: -1.5, y: -0.06}
+      - {x: -1.4499999, y: -0.34}
+      - {x: -1.3399999, y: -0.48}
+      - {x: -1.3299999, y: -0.7}
+      - {x: -1.38, y: -1.03}
+      - {x: -1.51, y: -1.3}
+      - {x: -1.5799999, y: -1.43}
+      - {x: -1.5999999, y: -1.49}
+      - {x: -1.5999999, y: -1.5999999}
+      - {x: 1.5999999, y: -1.5999999}
+      - {x: 1.5999999, y: -1.5}
+      - {x: 1.4, y: -1.27}
+  m_UseDelaunayMesh: 1
