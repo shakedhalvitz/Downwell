@@ -7,6 +7,9 @@ TagManager:
   - Platform
   - BreakablePlatform
   - Walls
+  - Enemy
+  - CollectabaleObject
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -18,9 +21,9 @@ TagManager:
   - Backgroung
   - Walls
   - Platform
-  - 
-  - 
-  - 
+  - Objects
+  - Enemies
+  - Player
   - 
   - 
   - 
@@ -55,6 +58,9 @@ TagManager:
     locked: 0
   - name: Platforms
     uniqueID: 619609853
+    locked: 0
+  - name: Objects
+    uniqueID: 3478448225
     locked: 0
   - name: Enemies
     uniqueID: 1808198743

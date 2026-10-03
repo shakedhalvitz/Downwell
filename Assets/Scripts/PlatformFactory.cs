@@ -1,6 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
-using System.Collections.Generic;
+
+public enum SpawnEnvironment
+{
+    RequireFloor,
+    RequireAir
+}
+
+[System.Serializable]
+public class ObjectSpawnData
+{
+    public string objectName;
+    public GameObject prefab;
+    public SpawnEnvironment environment;
+    [Range(0f, 1f)] public float spawnChance = 0.3f;
+    public int poolCapacity = 15;
+}
 
 public class PlatformFactory : MonoBehaviour
 {
@@ -9,6 +25,9 @@ public class PlatformFactory : MonoBehaviour
     [Header("Prefabs")]
     public GameObject solidPlatformPrefab;
     public GameObject breakablePlatformPrefab;
+
+    [Header("Spawnable Objects (Enemies, Coins)")]
+    public List<ObjectSpawnData> spawnableObjects = new List<ObjectSpawnData>();
 
     [Header("Grid Settings")]
     public float tileSize = 0.2f;
@@ -28,13 +47,11 @@ public class PlatformFactory : MonoBehaviour
     private ObjectPool<GameObject> solidPool;
     private ObjectPool<GameObject> breakablePool;
 
+    private Dictionary<string, ObjectPool<GameObject>> objectPools = new Dictionary<string, ObjectPool<GameObject>>();
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(this); return; }
         Instance = this;
 
         solidPool = new ObjectPool<GameObject>(
@@ -52,6 +69,20 @@ public class PlatformFactory : MonoBehaviour
             actionOnDestroy: Destroy,
             defaultCapacity: 150
         );
+
+        foreach (var objData in spawnableObjects)
+        {
+            if (objData.prefab != null && !objectPools.ContainsKey(objData.objectName))
+            {
+                objectPools.Add(objData.objectName, new ObjectPool<GameObject>(
+                    createFunc: () => Instantiate(objData.prefab),
+                    actionOnGet: obj => obj.SetActive(true),
+                    actionOnRelease: obj => obj.SetActive(false),
+                    actionOnDestroy: Destroy,
+                    defaultCapacity: objData.poolCapacity
+                ));
+            }
+        }
     }
 
     public void GeneratePlatformsInArea(float topY, float bottomY)
@@ -63,23 +94,42 @@ public class PlatformFactory : MonoBehaviour
 
         int[,] grid = new int[rows, cols];
 
-        int r = Mathf.RoundToInt(Random.Range(minSolidSpacing, maxSolidSpacing) / tileSize);
+        // 1. Solid Platforms & Floor Objects (Slimes)
+        int r = Mathf.RoundToInt(UnityEngine.Random.Range(minSolidSpacing, maxSolidSpacing) / tileSize);
         while (r < rows)
         {
-            int holeSize = Random.Range(minSolidHoleSize, maxSolidHoleSize + 1);
-            int holeStart = Random.Range(0, cols - holeSize + 1);
+            int holeSize = UnityEngine.Random.Range(minSolidHoleSize, maxSolidHoleSize + 1);
+            int holeStart = UnityEngine.Random.Range(0, cols - holeSize + 1);
+
+            int consecutiveSolidCount = 0;
+            float currentPlatformY = topY - (r * tileSize);
 
             for (int c = 0; c < cols; c++)
             {
                 if (c < holeStart || c >= holeStart + holeSize)
                 {
                     grid[r, c] = 1;
-                    SpawnBlock(solidPool, startX + (c * tileSize), topY - (r * tileSize));
+                    SpawnBlock(solidPool, startX + (c * tileSize), currentPlatformY);
+
+                    consecutiveSolidCount++;
+
+                    if (consecutiveSolidCount == 5)
+                    {
+                        float spawnX = startX + ((c - 2) * tileSize);
+                        float spawnY = currentPlatformY + tileSize;
+                        TrySpawnObject(SpawnEnvironment.RequireFloor, spawnX, spawnY);
+                        consecutiveSolidCount = 0;
+                    }
+                }
+                else
+                {
+                    consecutiveSolidCount = 0;
                 }
             }
-            r += Mathf.RoundToInt(Random.Range(minSolidSpacing, maxSolidSpacing) / tileSize);
+            r += Mathf.RoundToInt(UnityEngine.Random.Range(minSolidSpacing, maxSolidSpacing) / tileSize);
         }
 
+        // 2. Breakable Boxes
         for (int row = 0; row < rows; row++)
         {
             for (int col = 1; col < cols - 1; col++)
@@ -115,11 +165,26 @@ public class PlatformFactory : MonoBehaviour
 
                 float chance = hasNeighbor ? breakableClusterChance : breakableBaseChance;
 
-                if (Random.value <= chance)
+                if (UnityEngine.Random.value <= chance)
                 {
                     grid[row, col] = 2;
                     SpawnBlock(breakablePool, startX + (col * tileSize), topY - (row * tileSize));
                 }
+            }
+        }
+
+        // 3. Air Objects (Bats)
+        // Check empty spaces and try to spawn flying objects
+        for (int row = 0; row < rows; row += 2) // Jump every 2 rows to avoid flooding the screen
+        {
+            // Pick a random column away from the edges
+            int randomCol = UnityEngine.Random.Range(2, cols - 2);
+
+            if (grid[row, randomCol] == 0)
+            {
+                float spawnX = startX + (randomCol * tileSize);
+                float spawnY = topY - (row * tileSize);
+                TrySpawnObject(SpawnEnvironment.RequireAir, spawnX, spawnY);
             }
         }
     }
@@ -142,5 +207,34 @@ public class PlatformFactory : MonoBehaviour
 
         GameObject block = pool.Get();
         block.transform.position = new Vector2(x, y);
+    }
+
+    private void TrySpawnObject(SpawnEnvironment requiredEnv, float spawnX, float spawnY)
+    {
+        foreach (var objData in spawnableObjects)
+        {
+            if (objData.environment == requiredEnv && UnityEngine.Random.value <= objData.spawnChance)
+            {
+                if (objectPools.TryGetValue(objData.objectName, out ObjectPool<GameObject> pool))
+                {
+                    GameObject newObj = pool.Get();
+                    newObj.transform.position = new Vector2(spawnX, spawnY);
+
+                    SlimeMonster slime = newObj.GetComponent<SlimeMonster>();
+                    if (slime != null)
+                    {
+                        slime.Setup(releasedObj => pool.Release(releasedObj));
+                    }
+
+                    BatMonster bat = newObj.GetComponent<BatMonster>();
+                    if (bat != null)
+                    {
+                        bat.Setup(releasedObj => pool.Release(releasedObj));
+                    }
+
+                    return;
+                }
+            }
+        }
     }
 }
