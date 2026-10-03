@@ -1,62 +1,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour
+public class LevelGenerator : Singleton<LevelGenerator>
 {
-    [Header("Chunk Prefabs")]
-    public GameObject[] chunkPrefabs;
+    [Header("References")]
+    [SerializeField] private Transform player; // Drag the Player object here in the Inspector
 
-    [Header("Player Tracking")]
-    public Transform playerTransform;
+    [Header("Prefabs")]
+    [SerializeField] private GameObject wallsPrefab;
 
     [Header("Settings")]
-    public float chunkHeight = 10f;
-    public int chunksAhead = 3;
+    [SerializeField] private float segmentHeight = 20f;
+    [SerializeField] private int initialSegments = 3;
+    [SerializeField] private float spawnDistanceThreshold = 40f; // Distance below player to trigger spawning
 
-    private float currentSpawnY = 0f;
-    private List<GameObject> activeChunks = new List<GameObject>();
+    private float currentSpawnY = 3f;
+    private List<GameObject> activeWalls = new List<GameObject>();
 
     void Start()
     {
-        for (int i = 0; i < chunksAhead + 2; i++)
+        for (int i = 0; i < initialSegments; i++)
         {
-            SpawnChunk();
+            SpawnNextSegment();
         }
     }
 
     void Update()
     {
-        if (playerTransform == null) return;
-
-        if (playerTransform.position.y < currentSpawnY + (chunksAhead * chunkHeight))
+        // Distance-based generation guarantees we never miss a trigger zone[cite: 6]
+        if (player != null)
         {
-            SpawnChunk();
-            CleanupOldChunks();
+            if (player.position.y - spawnDistanceThreshold < currentSpawnY)
+            {
+                SpawnNextSegment();
+            }
         }
     }
 
-    void SpawnChunk()
+    public void SpawnNextSegment()
     {
-        if (chunkPrefabs == null || chunkPrefabs.Length == 0) return;
+        Vector3 spawnPosition = new Vector3(7.18f, currentSpawnY, 0f);
+        GameObject newWalls = Instantiate(wallsPrefab, spawnPosition, Quaternion.identity);
+        activeWalls.Add(newWalls);
 
-        int randomIndex = Random.Range(0, chunkPrefabs.Length);
-        GameObject selectedPrefab = chunkPrefabs[randomIndex];
+        if (PlatformFactory.Instance != null)
+        {
+            float topY = currentSpawnY;
+            float bottomY = currentSpawnY - segmentHeight;
+            PlatformFactory.Instance.GeneratePlatformsInArea(topY, bottomY);
+        }
 
-        Vector3 spawnPosition = new Vector3(0f, currentSpawnY, 0f);
-        GameObject newChunk = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
-
-        activeChunks.Add(newChunk);
-
-        currentSpawnY -= chunkHeight;
+        currentSpawnY -= segmentHeight;
+        CleanupOldSegments();
     }
 
-    void CleanupOldChunks()
+    void CleanupOldSegments()
     {
-        if (activeChunks.Count > 5)
+        // Increased the buffer to 5 segments to prevent deleting walls visible on screen
+        if (activeWalls.Count > 5)
         {
-            GameObject oldChunk = activeChunks[0];
-            activeChunks.RemoveAt(0);
-            Destroy(oldChunk);
+            GameObject oldWalls = activeWalls[0];
+            activeWalls.RemoveAt(0);
+            Destroy(oldWalls);
         }
     }
 }

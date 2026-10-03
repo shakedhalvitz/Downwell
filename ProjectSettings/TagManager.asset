@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Wall
   - Platform
   - BreakablePlatform
+  - Walls
   layers:
   - Default
   - TransparentFX
@@ -15,8 +15,8 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - Environment
+  - Backgroung
+  - Walls
   - Platform
   - 
   - 
