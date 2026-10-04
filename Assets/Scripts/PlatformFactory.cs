@@ -49,6 +49,10 @@ public class PlatformFactory : MonoBehaviour
 
     private Dictionary<string, ObjectPool<GameObject>> objectPools = new Dictionary<string, ObjectPool<GameObject>>();
 
+    // Every object currently taken out of a pool, and the pool it must go back to
+    private Dictionary<GameObject, ObjectPool<GameObject>> activeObjects = new Dictionary<GameObject, ObjectPool<GameObject>>();
+    private readonly List<GameObject> releaseBuffer = new List<GameObject>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(this); return; }
@@ -205,8 +209,48 @@ public class PlatformFactory : MonoBehaviour
             }
         }
 
-        GameObject block = pool.Get();
-        block.transform.position = new Vector2(x, y);
+        GetFromPool(pool, new Vector2(x, y));
+    }
+
+    private GameObject GetFromPool(ObjectPool<GameObject> pool, Vector2 position)
+    {
+        GameObject obj = pool.Get();
+        obj.transform.position = position;
+        activeObjects[obj] = pool;
+        return obj;
+    }
+
+    /// <summary>
+    /// Returns a spawned object (platform, box, enemy, collectable) to its pool.
+    /// Safe to call more than once - only the first call releases it.
+    /// </summary>
+    public void Release(GameObject obj)
+    {
+        if (obj != null && activeObjects.TryGetValue(obj, out ObjectPool<GameObject> pool))
+        {
+            activeObjects.Remove(obj);
+            pool.Release(obj);
+        }
+    }
+
+    /// <summary>
+    /// Returns every spawned object above the given height to its pool (called when old segments scroll away).
+    /// </summary>
+    public void ReleaseObjectsAbove(float y)
+    {
+        releaseBuffer.Clear();
+        foreach (GameObject obj in activeObjects.Keys)
+        {
+            if (obj.transform.position.y > y)
+            {
+                releaseBuffer.Add(obj);
+            }
+        }
+
+        foreach (GameObject obj in releaseBuffer)
+        {
+            Release(obj);
+        }
     }
 
     private void TrySpawnObject(SpawnEnvironment requiredEnv, float spawnX, float spawnY)
@@ -217,25 +261,25 @@ public class PlatformFactory : MonoBehaviour
             {
                 if (objectPools.TryGetValue(objData.objectName, out ObjectPool<GameObject> pool))
                 {
-                    GameObject newObj = pool.Get();
-                    newObj.transform.position = new Vector2(spawnX, spawnY);
+                    GameObject newObj = GetFromPool(pool, new Vector2(spawnX, spawnY));
 
+                    // All releases go through Release() so an object is never returned twice
                     SlimeMonster slime = newObj.GetComponent<SlimeMonster>();
                     if (slime != null)
                     {
-                        slime.Setup(releasedObj => pool.Release(releasedObj));
+                        slime.Setup(Release);
                     }
 
                     BatMonster bat = newObj.GetComponent<BatMonster>();
                     if (bat != null)
                     {
-                        bat.Setup(releasedObj => pool.Release(releasedObj));
+                        bat.Setup(Release);
                     }
 
                     CollectableObject collectable = newObj.GetComponent<CollectableObject>();
                     if (collectable != null)
                     {
-                        collectable.Setup(releasedObj => pool.Release(releasedObj));
+                        collectable.Setup(Release);
                     }
 
                     return;

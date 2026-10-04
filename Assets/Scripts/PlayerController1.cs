@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     [Tooltip("How far up to move on each attempt when the death spot isn't safe")]
     [SerializeField] private float respawnSearchStep = 0.5f;
     [SerializeField] private int respawnMaxAttempts = 30;
+    [Tooltip("Minimum distance below the top edge of the screen for a respawn point")]
+    [SerializeField] private float respawnTopMargin = 1.5f;
     [SerializeField] private float invincibilityDuration = 2f;
     [SerializeField] private float blinkInterval = 0.1f;
 
@@ -68,12 +70,23 @@ public class PlayerController : MonoBehaviour
         {
             firePoint = transform;
         }
+
+        // Hidden and frozen until the game actually starts (start menu)
+        SetPlayerActive(false);
     }
 
     void Start()
     {
         // Subscribed here (not OnEnable) because Die() disables this component, and we still need to hear the respawn
-        GameManager.Instance.OnPlayerRespawned += Respawn;
+        GameManager gm = GameManager.Instance;
+        gm.OnPlayerRespawned += Respawn;
+        gm.OnGameStarted += OnGameStarted;
+
+        // GameManager.Start may have already started the game (e.g. after a restart)
+        if (gm.IsPlaying)
+        {
+            OnGameStarted();
+        }
     }
 
     void OnDestroy()
@@ -81,7 +94,22 @@ public class PlayerController : MonoBehaviour
         if (GameManager.HasInstance)
         {
             GameManager.Instance.OnPlayerRespawned -= Respawn;
+            GameManager.Instance.OnGameStarted -= OnGameStarted;
         }
+    }
+
+    private void OnGameStarted()
+    {
+        SetPlayerActive(true);
+    }
+
+    /// <summary>
+    /// Shows/hides the player and turns its physics on/off.
+    /// </summary>
+    private void SetPlayerActive(bool active)
+    {
+        rb.simulated = active;
+        spriteRenderer.enabled = active;
     }
 
     void OnEnable()
@@ -98,13 +126,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Ignore input while dead or while the game is frozen (start menu)
-        if (isDead || Time.timeScale == 0f) return;
+        // Ignore input while dead or while not playing (start menu / game over)
+        if (isDead || !GameManager.Instance.IsPlaying) return;
 
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.UpdateDepth(transform.position.y);
-        }
+        GameManager.Instance.UpdateDepth(transform.position.y);
 
         if (moveAction != null)
         {
@@ -134,7 +159,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDead) return;
+        if (isDead || !GameManager.Instance.IsPlaying) return;
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
@@ -317,8 +342,26 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Starts at the death spot and moves upward until there is no enemy nearby
     /// and the player's body doesn't overlap any solid object.
+    /// If that runs off the top of the screen, searches downward instead.
     /// </summary>
     private Vector2 FindSafeRespawnPosition(Vector2 origin)
+    {
+        // Never respawn above the visible screen - the scrolling camera would kill the player instantly
+        if (CameraScroller.Instance != null)
+        {
+            origin.y = Mathf.Min(origin.y, CameraScroller.Instance.TopEdgeY - respawnTopMargin);
+        }
+
+        if (TrySearch(origin, Vector2.up, out Vector2 found) || TrySearch(origin, Vector2.down, out found))
+        {
+            return found;
+        }
+
+        // Nothing safe found - fall back to the death spot and rely on invincibility
+        return origin;
+    }
+
+    private bool TrySearch(Vector2 origin, Vector2 direction, out Vector2 found)
     {
         Vector2 candidate = origin;
 
@@ -326,17 +369,23 @@ public class PlayerController : MonoBehaviour
         {
             if (IsSafeRespawnPosition(candidate))
             {
-                return candidate;
+                found = candidate;
+                return true;
             }
-            candidate += Vector2.up * respawnSearchStep;
+            candidate += direction * respawnSearchStep;
         }
 
-        // Nothing safe found - fall back to the death spot and rely on invincibility
-        return origin;
+        found = origin;
+        return false;
     }
 
     private bool IsSafeRespawnPosition(Vector2 position)
     {
+        if (CameraScroller.Instance != null && position.y > CameraScroller.Instance.TopEdgeY - respawnTopMargin)
+        {
+            return false;
+        }
+
         foreach (Collider2D hit in Physics2D.OverlapCircleAll(position, respawnSafeRadius))
         {
             if (hit.attachedRigidbody == rb) continue;

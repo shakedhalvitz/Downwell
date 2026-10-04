@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+
+public enum GameState { Menu, Playing, GameOver }
 
 public class GameManager : Singleton<GameManager>
 {
@@ -19,21 +20,26 @@ public class GameManager : Singleton<GameManager>
     [Header("Input Actions")]
     [SerializeField] private InputActionReference _restartAction;
 
+    // Set by RestartGame so the reloaded scene skips the start menu
+    private static bool _skipMenuOnNextLoad;
+
+    private GameState _state = GameState.Menu;
     private int _score;
     private int _lives;
     private float _maxDepth;
-    private bool _gameOver;
     private bool _playerAlive;
 
+    public GameState State => _state;
+    public bool IsPlaying => _state == GameState.Playing;
     public int Score => _score;
     public int Lives => _lives;
     public float MaxDepth => _maxDepth;
-    public bool GameOver => _gameOver;
     public bool PlayerAlive => _playerAlive;
 
     // Human-readable key for the restart action (e.g. "Space"), used by the Game Over screen
     public string RestartBindingDisplay => _restartAction != null ? _restartAction.action.GetBindingDisplayString() : "";
 
+    public event Action<GameState> OnStateChanged;
     public event Action<int> OnScoreChanged;
     public event Action<int> OnLivesChanged;
     public event Action<int> OnDepthChanged;
@@ -60,21 +66,41 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // Resets the static flag on every Play in the editor, even with domain reload turned off
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        _skipMenuOnNextLoad = false;
+    }
+
     private void Start()
     {
-        // Wait one frame to ensure all other scripts have subscribed to the events before starting
-        StartCoroutine(StartGameNextFrame());
+        // Other scripts read State in their own Start and also listen to OnStateChanged,
+        // so it doesn't matter whether they run before or after this.
+        if (_skipMenuOnNextLoad)
+        {
+            _skipMenuOnNextLoad = false;
+            StartGame();
+        }
+        else
+        {
+            SetState(GameState.Menu);
+        }
     }
 
-    private IEnumerator StartGameNextFrame()
+    private void SetState(GameState newState)
     {
-        yield return null;
-        StartGame();
+        _state = newState;
+        OnStateChanged?.Invoke(_state);
     }
 
+    /// <summary>
+    /// Called by the START button (hooked up by UIManager) or directly after a restart.
+    /// </summary>
     public void StartGame()
     {
-        _gameOver = false;
+        if (_state == GameState.Playing) return;
+
         _playerAlive = true;
         _score = 0;
         _maxDepth = 0f;
@@ -83,12 +109,14 @@ public class GameManager : Singleton<GameManager>
         OnScoreChanged?.Invoke(_score);
         OnLivesChanged?.Invoke(_lives);
         OnDepthChanged?.Invoke(0);
+
+        SetState(GameState.Playing);
         OnGameStarted?.Invoke();
     }
 
     private void OnRestartPerformed(InputAction.CallbackContext context)
     {
-        if (_gameOver)
+        if (_state == GameState.GameOver)
         {
             RestartGame();
         }
@@ -97,12 +125,14 @@ public class GameManager : Singleton<GameManager>
     public void RestartGame()
     {
         // Reloading the active scene cleanly resets all states, objects, and pools
+        _skipMenuOnNextLoad = true;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void AddScore(int pointsToAdd)
     {
-        if (_gameOver || !_playerAlive) return;
+        if (!IsPlaying || !_playerAlive) return;
 
         _score += pointsToAdd;
         OnScoreChanged?.Invoke(_score);
@@ -110,7 +140,7 @@ public class GameManager : Singleton<GameManager>
 
     public void AddLife()
     {
-        if (_gameOver || !_playerAlive) return;
+        if (!IsPlaying || !_playerAlive) return;
 
         _lives++;
         OnLivesChanged?.Invoke(_lives);
@@ -118,7 +148,7 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateDepth(float playerY)
     {
-        if (_gameOver || !_playerAlive) return;
+        if (!IsPlaying || !_playerAlive) return;
 
         float currentDepth = Mathf.Max(0, -playerY);
         if (currentDepth > _maxDepth)
@@ -130,7 +160,7 @@ public class GameManager : Singleton<GameManager>
 
     public void OnPlayerHit()
     {
-        if (_gameOver || !_playerAlive) return;
+        if (!IsPlaying || !_playerAlive) return;
 
         _playerAlive = false;
         _lives--;
@@ -140,14 +170,7 @@ public class GameManager : Singleton<GameManager>
 
         if (_lives <= 0)
         {
-            _gameOver = true;
-
-            // Add the max depth achieved to the final score when the game is over
-            _score += Mathf.FloorToInt(_maxDepth);
-            OnScoreChanged?.Invoke(_score);
-
-            AudioManager.Instance.PlaySfx(_gameOverSound);
-            OnGameOver?.Invoke();
+            EndGame();
         }
         else
         {
@@ -156,9 +179,38 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    /// <summary>
+    /// Ends the run immediately regardless of lives left (e.g. pushed off the top of the screen).
+    /// </summary>
+    public void KillPlayerInstantly()
+    {
+        if (!IsPlaying) return;
+
+        CancelInvoke(nameof(RespawnPlayer));
+        _playerAlive = false;
+        _lives = 0;
+
+        OnLivesChanged?.Invoke(_lives);
+        OnPlayerDied?.Invoke();
+
+        EndGame();
+    }
+
+    private void EndGame()
+    {
+        // Add the max depth achieved to the final score when the game is over
+        _score += Mathf.FloorToInt(_maxDepth);
+        OnScoreChanged?.Invoke(_score);
+
+        AudioManager.Instance.PlaySfx(_gameOverSound);
+
+        SetState(GameState.GameOver);
+        OnGameOver?.Invoke();
+    }
+
     private void RespawnPlayer()
     {
-        if (_gameOver) return;
+        if (!IsPlaying) return;
 
         _playerAlive = true;
         OnPlayerRespawned?.Invoke();

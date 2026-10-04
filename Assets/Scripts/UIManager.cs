@@ -1,35 +1,46 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Screens (exactly one is shown at a time)")]
+    [Tooltip("Parent of the start menu (title, START button, player animation)")]
+    [SerializeField] private GameObject _menuGroup;
+    [Tooltip("Parent of the in-game HUD (score, lives, heart icon, depth, mobile controls)")]
+    [SerializeField] private GameObject _hudGroup;
+    [Tooltip("Parent of the Game Over panel and text")]
+    [SerializeField] private GameObject _gameOverGroup;
+
+    [Header("Buttons")]
+    [Tooltip("Optional - if empty, the first Button inside the menu group is used")]
+    [SerializeField] private Button _startButton;
+
     [Header("HUD")]
     [SerializeField] private TextMeshProUGUI _scoreText;
     [Tooltip("Sits next to the heart icon, shows e.g. \"x 3\"")]
     [SerializeField] private TextMeshProUGUI _livesText;
     [SerializeField] private TextMeshProUGUI _depthText;
-    [Tooltip("Other HUD objects to hide while the start menu is open (e.g. the heart icon)")]
-    [SerializeField] private GameObject[] _extraHudElements;
 
     [Header("Game Over")]
-    [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _gameOverText;
 
     private void Start()
     {
-        // Hide both explicitly - the text isn't necessarily a child of the panel
-        SetGameOverVisible(false);
-
         // Subscribed in Start (not OnEnable) and through Instance (not HasInstance):
         // the GameManager singleton is only registered the first time Instance is accessed,
         // so HasInstance can still be false during OnEnable.
-        // GameManager fires its initial values one frame after Start, so nothing is missed.
         GameManager gm = GameManager.Instance;
+        gm.OnStateChanged += ShowScreen;
         gm.OnScoreChanged += UpdateScore;
         gm.OnLivesChanged += UpdateLives;
         gm.OnDepthChanged += UpdateDepth;
-        gm.OnGameOver += ShowGameOver;
+        gm.OnGameOver += FillGameOverText;
 
+        HookUpButtons(gm);
+
+        // Apply the current state right away - GameManager.Start may have already run
+        ShowScreen(gm.State);
         UpdateScore(gm.Score);
         UpdateLives(gm.Lives);
         UpdateDepth(Mathf.FloorToInt(gm.MaxDepth));
@@ -40,11 +51,54 @@ public class UIManager : MonoBehaviour
         if (GameManager.HasInstance)
         {
             GameManager gm = GameManager.Instance;
+            gm.OnStateChanged -= ShowScreen;
             gm.OnScoreChanged -= UpdateScore;
             gm.OnLivesChanged -= UpdateLives;
             gm.OnDepthChanged -= UpdateDepth;
-            gm.OnGameOver -= ShowGameOver;
+            gm.OnGameOver -= FillGameOverText;
         }
+    }
+
+    private void HookUpButtons(GameManager gm)
+    {
+        // START button - no need to set up OnClick in the Inspector
+        if (_startButton == null && _menuGroup != null)
+        {
+            _startButton = _menuGroup.GetComponentInChildren<Button>(true);
+        }
+        if (_startButton != null)
+        {
+            _startButton.onClick.AddListener(gm.StartGame);
+        }
+
+        // Tapping anywhere on the Game Over panel restarts (needed on mobile - there's no keyboard)
+        if (_gameOverGroup != null)
+        {
+            Button restartButton = _gameOverGroup.GetComponentInChildren<Button>(true);
+            if (restartButton == null)
+            {
+                Image panelImage = _gameOverGroup.GetComponentInChildren<Image>(true);
+                if (panelImage != null)
+                {
+                    restartButton = panelImage.gameObject.AddComponent<Button>();
+                    restartButton.transition = Selectable.Transition.None;
+                }
+            }
+            if (restartButton != null)
+            {
+                restartButton.onClick.AddListener(gm.RestartGame);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Shows exactly one screen group for the given game state and hides the others.
+    /// </summary>
+    private void ShowScreen(GameState state)
+    {
+        if (_menuGroup != null) _menuGroup.SetActive(state == GameState.Menu);
+        if (_hudGroup != null) _hudGroup.SetActive(state == GameState.Playing);
+        if (_gameOverGroup != null) _gameOverGroup.SetActive(state == GameState.GameOver);
     }
 
     private void UpdateScore(int score)
@@ -71,46 +125,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ShowGameOver()
+    private void FillGameOverText()
     {
+        if (_gameOverText == null) return;
+
         GameManager gm = GameManager.Instance;
+        string restartKey = gm.RestartBindingDisplay;
+        string restartLine = string.IsNullOrEmpty(restartKey) ? "Tap to restart" : $"Tap or press {restartKey} to restart";
 
-        if (_gameOverText != null)
-        {
-            string restartKey = gm.RestartBindingDisplay;
-            string restartLine = string.IsNullOrEmpty(restartKey) ? "" : $"\n\nPress {restartKey} to restart";
-
-            _gameOverText.text =
-                $"GAME OVER\n\n" +
-                $"Depth: {Mathf.FloorToInt(gm.MaxDepth)}m\n" +
-                $"Final Score: {gm.Score}" +
-                restartLine;
-        }
-
-        SetGameOverVisible(true);
-    }
-
-    /// <summary>
-    /// Shows/hides the in-game HUD (score, lives, depth). Used by the start menu.
-    /// </summary>
-    public void SetHudVisible(bool visible)
-    {
-        if (_scoreText != null) _scoreText.gameObject.SetActive(visible);
-        if (_livesText != null) _livesText.gameObject.SetActive(visible);
-        if (_depthText != null) _depthText.gameObject.SetActive(visible);
-
-        if (_extraHudElements != null)
-        {
-            foreach (GameObject element in _extraHudElements)
-            {
-                if (element != null) element.SetActive(visible);
-            }
-        }
-    }
-
-    private void SetGameOverVisible(bool visible)
-    {
-        if (_gameOverPanel != null) _gameOverPanel.SetActive(visible);
-        if (_gameOverText != null) _gameOverText.gameObject.SetActive(visible);
+        _gameOverText.text =
+            $"GAME OVER\n\n" +
+            $"Depth: {Mathf.FloorToInt(gm.MaxDepth)}m\n" +
+            $"Final Score: {gm.Score}\n\n" +
+            restartLine;
     }
 }

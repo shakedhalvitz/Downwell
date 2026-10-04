@@ -17,11 +17,48 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private float currentSpawnY = 3f;
     private List<GameObject> activeWalls = new List<GameObject>();
 
+    // Areas whose platforms/enemies wait for the game to start (walls are visible behind the start menu, the rest isn't)
+    private readonly List<Vector2> pendingAreas = new List<Vector2>();
+
     void Start()
     {
+        GameManager.Instance.OnGameStarted += GeneratePendingAreas;
+
         for (int i = 0; i < initialSegments; i++)
         {
             SpawnNextSegment();
+        }
+
+        // GameManager.Start may have already started the game (e.g. after a restart)
+        if (GameManager.Instance.IsPlaying)
+        {
+            GeneratePendingAreas();
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnGameStarted -= GeneratePendingAreas;
+        }
+        base.OnDestroy();
+    }
+
+    private void GeneratePendingAreas()
+    {
+        foreach (Vector2 area in pendingAreas)
+        {
+            GenerateArea(area.x, area.y);
+        }
+        pendingAreas.Clear();
+    }
+
+    private void GenerateArea(float topY, float bottomY)
+    {
+        if (PlatformFactory.Instance != null)
+        {
+            PlatformFactory.Instance.GeneratePlatformsInArea(topY, bottomY);
         }
     }
 
@@ -43,11 +80,16 @@ public class LevelGenerator : Singleton<LevelGenerator>
         GameObject newWalls = Instantiate(wallsPrefab, spawnPosition, Quaternion.identity);
         activeWalls.Add(newWalls);
 
-        if (PlatformFactory.Instance != null)
+        float topY = currentSpawnY;
+        float bottomY = currentSpawnY - segmentHeight;
+
+        if (GameManager.Instance.IsPlaying)
         {
-            float topY = currentSpawnY;
-            float bottomY = currentSpawnY - segmentHeight;
-            PlatformFactory.Instance.GeneratePlatformsInArea(topY, bottomY);
+            GenerateArea(topY, bottomY);
+        }
+        else
+        {
+            pendingAreas.Add(new Vector2(topY, bottomY));
         }
 
         currentSpawnY -= segmentHeight;
@@ -61,6 +103,14 @@ public class LevelGenerator : Singleton<LevelGenerator>
         {
             GameObject oldWalls = activeWalls[0];
             activeWalls.RemoveAt(0);
+
+            // Everything above the bottom of the removed segment is far off-screen - return it to the pools
+            float removedSegmentBottom = oldWalls.transform.position.y - segmentHeight;
+            if (PlatformFactory.Instance != null)
+            {
+                PlatformFactory.Instance.ReleaseObjectsAbove(removedSegmentBottom);
+            }
+
             Destroy(oldWalls);
         }
     }

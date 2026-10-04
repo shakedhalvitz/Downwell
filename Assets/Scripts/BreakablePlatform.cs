@@ -38,7 +38,15 @@ public class BreakablePlatform : MonoBehaviour
     {
         yield return new WaitForSeconds(0.4f);
 
-        gameObject.SetActive(false);
+        // Back to the pool so it can be reused further down
+        if (PlatformFactory.Instance != null)
+        {
+            PlatformFactory.Instance.Release(gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnEnable()
