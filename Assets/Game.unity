@@ -1451,8 +1451,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
   jumpForce: 5
-  breakJumpForce: 4
-  hoverForce: 5
+  breakJumpForce: 5
+  hoverForce: 4
   _audioSource: {fileID: 702249480}
   _shootSound: {fileID: 8300000, guid: f80353c89139e5846a6e1ad0722d8ff7, type: 3}
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
