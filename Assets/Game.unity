@@ -1803,7 +1803,7 @@ MonoBehaviour:
   _respawnDelay: 2
   _playerDeathSound: {fileID: 8300000, guid: 6f58e0dd1cf1b414881478c897ae1d8f, type: 3}
   _gameOverSound: {fileID: 8300000, guid: ef1d37f39a153ad4fb53c1ae682965d1, type: 3}
-  _restartAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _gameOverInputDelay: 1
 --- !u!4 &836387075
 Transform:
   m_ObjectHideFlags: 0
@@ -1852,7 +1852,7 @@ MonoBehaviour:
   - objectName: Diamond
     prefab: {fileID: 2830026485076436644, guid: c2c5f18a64fe8394bb07b82874590a2c, type: 3}
     environment: 1
-    spawnChance: 0.3
+    spawnChance: 0.4
     poolCapacity: 40
   - objectName: Heart
     prefab: {fileID: 6369599071040731036, guid: cb3dc53bb5eaf3843851a9e8277e66cf, type: 3}
@@ -2224,7 +2224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.6313726}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.92156863}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2763,6 +2763,7 @@ MonoBehaviour:
   _livesText: {fileID: 886949476}
   _depthText: {fileID: 1435931363}
   _gameOverText: {fileID: 1674418716}
+  _gameOverMaxFontSize: 110
 --- !u!1 &1435931361
 GameObject:
   m_ObjectHideFlags: 0

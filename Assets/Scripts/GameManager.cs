@@ -17,17 +17,16 @@ public class GameManager : Singleton<GameManager>
     [Tooltip("Played instead of the death sound when the last life is lost")]
     [SerializeField] private AudioClip _gameOverSound;
 
-    [Header("Input Actions")]
-    [SerializeField] private InputActionReference _restartAction;
-
-    // Set by RestartGame so the reloaded scene skips the start menu
-    private static bool _skipMenuOnNextLoad;
+    [Header("Game Over")]
+    [Tooltip("Ignore input for this long after Game Over, so a press at the moment of death doesn't skip the screen")]
+    [SerializeField] private float _gameOverInputDelay = 1f;
 
     private GameState _state = GameState.Menu;
     private int _score;
     private int _lives;
     private float _maxDepth;
     private bool _playerAlive;
+    private float _gameOverTime;
 
     public GameState State => _state;
     public bool IsPlaying => _state == GameState.Playing;
@@ -35,9 +34,6 @@ public class GameManager : Singleton<GameManager>
     public int Lives => _lives;
     public float MaxDepth => _maxDepth;
     public bool PlayerAlive => _playerAlive;
-
-    // Human-readable key for the restart action (e.g. "Space"), used by the Game Over screen
-    public string RestartBindingDisplay => _restartAction != null ? _restartAction.action.GetBindingDisplayString() : "";
 
     public event Action<GameState> OnStateChanged;
     public event Action<int> OnScoreChanged;
@@ -48,44 +44,30 @@ public class GameManager : Singleton<GameManager>
     public event Action OnPlayerDied;
     public event Action OnPlayerRespawned;
 
-    private void OnEnable()
-    {
-        if (_restartAction != null)
-        {
-            _restartAction.action.Enable();
-            _restartAction.action.performed += OnRestartPerformed;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (_restartAction != null)
-        {
-            _restartAction.action.Disable();
-            _restartAction.action.performed -= OnRestartPerformed;
-        }
-    }
-
-    // Resets the static flag on every Play in the editor, even with domain reload turned off
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStaticState()
-    {
-        _skipMenuOnNextLoad = false;
-    }
-
     private void Start()
     {
         // Other scripts read State in their own Start and also listen to OnStateChanged,
         // so it doesn't matter whether they run before or after this.
-        if (_skipMenuOnNextLoad)
+        SetState(GameState.Menu);
+    }
+
+    private void Update()
+    {
+        // On the Game Over screen: any key, mouse click or screen tap goes back to the main menu
+        if (_state == GameState.GameOver &&
+            Time.unscaledTime - _gameOverTime >= _gameOverInputDelay &&
+            AnyPressThisFrame())
         {
-            _skipMenuOnNextLoad = false;
-            StartGame();
+            ReturnToMainMenu();
         }
-        else
-        {
-            SetState(GameState.Menu);
-        }
+    }
+
+    private static bool AnyPressThisFrame()
+    {
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) return true;
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) return true;
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame) return true;
+        return false;
     }
 
     private void SetState(GameState newState)
@@ -95,7 +77,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// Called by the START button (hooked up by UIManager) or directly after a restart.
+    /// Called by the START button (hooked up by UIManager).
     /// </summary>
     public void StartGame()
     {
@@ -114,18 +96,9 @@ public class GameManager : Singleton<GameManager>
         OnGameStarted?.Invoke();
     }
 
-    private void OnRestartPerformed(InputAction.CallbackContext context)
+    public void ReturnToMainMenu()
     {
-        if (_state == GameState.GameOver)
-        {
-            RestartGame();
-        }
-    }
-
-    public void RestartGame()
-    {
-        // Reloading the active scene cleanly resets all states, objects, and pools
-        _skipMenuOnNextLoad = true;
+        // Reloading the active scene cleanly resets all states, objects, and pools - and starts at the menu
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -204,6 +177,7 @@ public class GameManager : Singleton<GameManager>
 
         AudioManager.Instance.PlaySfx(_gameOverSound);
 
+        _gameOverTime = Time.unscaledTime;
         SetState(GameState.GameOver);
         OnGameOver?.Invoke();
     }

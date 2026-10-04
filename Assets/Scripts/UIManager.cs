@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Game Over")]
     [SerializeField] private TextMeshProUGUI _gameOverText;
+    [Tooltip("The Game Over text auto-sizes to fill its box, up to this font size")]
+    [SerializeField] private float _gameOverMaxFontSize = 110f;
 
     private void Start()
     {
@@ -71,24 +73,7 @@ public class UIManager : MonoBehaviour
             _startButton.onClick.AddListener(gm.StartGame);
         }
 
-        // Tapping anywhere on the Game Over panel restarts (needed on mobile - there's no keyboard)
-        if (_gameOverGroup != null)
-        {
-            Button restartButton = _gameOverGroup.GetComponentInChildren<Button>(true);
-            if (restartButton == null)
-            {
-                Image panelImage = _gameOverGroup.GetComponentInChildren<Image>(true);
-                if (panelImage != null)
-                {
-                    restartButton = panelImage.gameObject.AddComponent<Button>();
-                    restartButton.transition = Selectable.Transition.None;
-                }
-            }
-            if (restartButton != null)
-            {
-                restartButton.onClick.AddListener(gm.RestartGame);
-            }
-        }
+        // Leaving the Game Over screen (any key / click / tap) is handled by GameManager
     }
 
     /// <summary>
@@ -130,13 +115,15 @@ public class UIManager : MonoBehaviour
         if (_gameOverText == null) return;
 
         GameManager gm = GameManager.Instance;
-        string restartKey = gm.RestartBindingDisplay;
-        string restartLine = string.IsNullOrEmpty(restartKey) ? "Tap to restart" : $"Tap or press {restartKey} to restart";
+
+        // Grow the text as large as its box allows
+        _gameOverText.enableAutoSizing = true;
+        _gameOverText.fontSizeMin = 36f;
+        _gameOverText.fontSizeMax = _gameOverMaxFontSize;
 
         _gameOverText.text =
             $"GAME OVER\n\n" +
             $"Depth: {Mathf.FloorToInt(gm.MaxDepth)}m\n" +
-            $"Final Score: {gm.Score}\n\n" +
-            restartLine;
+            $"Final Score: {gm.Score}";
     }
 }

@@ -47,7 +47,7 @@ stateDiagram-v2
     KillEnemy --> Falling: +Score
     Falling --> Crushed: Pushed above top screen edge
     Crushed --> GameOver
-    GameOver --> Falling: Restart
+    GameOver --> Menu: Any key / tap
 ```
 
 **Moment-to-moment rules:**
@@ -100,7 +100,7 @@ stateDiagram-v2
    - Top left: heart icon with the lives count, and the current score.
    - Top right: depth meter (m).
    - Mobile only: transparent left/right buttons in the bottom corners.
-3. **Game Over** — final score (including the depth bonus), max depth. Tap the screen or press the restart key to play again; a restart skips the main menu.
+3. **Game Over** — final score (including the depth bonus), max depth. After a 1-second delay, any key, click, or screen tap returns to the main menu.
 
 - **Screen flow:** `GameManager` holds the game state (`Menu` → `Playing` → `GameOver`). `UIManager` shows exactly one screen group (Menu / HUD / Game Over) for the current state.
 - **Canvas setup:** Screen Space – Camera, CanvasScaler *Scale With Screen Size*, reference 1080 × 1920, Match Width Or Height = 0.5.
@@ -139,7 +139,7 @@ Enemies don't collide with each other (Physics 2D layer matrix).
 
 ## 8. Technical Design
 
-**Scenes:** one scene, `Game.unity`. Instead of separate menu scenes, `GameManager` switches between the Menu, Playing, and Game Over states, and Restart reloads the scene.
+**Scenes:** one scene, `Game.unity`. Instead of separate menu scenes, `GameManager` switches between the Menu, Playing, and Game Over states, and leaving Game Over reloads the scene back to the menu.
 
 **Packages / systems used:** Physics2D, Cinemachine, URP 2D, Input System (including on-screen controls), TextMeshPro.
 
