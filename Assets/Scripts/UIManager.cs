@@ -3,47 +3,47 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("UI Elements")]
+    [Header("HUD")]
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [Tooltip("Sits next to the heart icon, shows e.g. \"x 3\"")]
     [SerializeField] private TextMeshProUGUI _livesText;
     [SerializeField] private TextMeshProUGUI _depthText;
 
-    [Header("Tracking")]
-    [SerializeField] private Transform _playerTransform;
-
-    private void OnEnable()
-    {
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.OnScoreChanged += UpdateScore;
-            GameManager.Instance.OnLivesChanged += UpdateLives;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.OnScoreChanged -= UpdateScore;
-            GameManager.Instance.OnLivesChanged -= UpdateLives;
-        }
-    }
+    [Header("Game Over")]
+    [SerializeField] private GameObject _gameOverPanel;
+    [SerializeField] private TextMeshProUGUI _gameOverText;
 
     private void Start()
     {
-        if (GameManager.HasInstance)
+        if (_gameOverPanel != null)
         {
-            UpdateScore(GameManager.Instance.Score);
-            UpdateLives(GameManager.Instance.Lives);
+            _gameOverPanel.SetActive(false);
         }
+
+        // Subscribed in Start (not OnEnable) and through Instance (not HasInstance):
+        // the GameManager singleton is only registered the first time Instance is accessed,
+        // so HasInstance can still be false during OnEnable.
+        // GameManager fires its initial values one frame after Start, so nothing is missed.
+        GameManager gm = GameManager.Instance;
+        gm.OnScoreChanged += UpdateScore;
+        gm.OnLivesChanged += UpdateLives;
+        gm.OnDepthChanged += UpdateDepth;
+        gm.OnGameOver += ShowGameOver;
+
+        UpdateScore(gm.Score);
+        UpdateLives(gm.Lives);
+        UpdateDepth(Mathf.FloorToInt(gm.MaxDepth));
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (_playerTransform != null && _depthText != null)
+        if (GameManager.HasInstance)
         {
-            float depth = Mathf.Max(0, -_playerTransform.position.y);
-            _depthText.text = $"{Mathf.FloorToInt(depth)}m";
+            GameManager gm = GameManager.Instance;
+            gm.OnScoreChanged -= UpdateScore;
+            gm.OnLivesChanged -= UpdateLives;
+            gm.OnDepthChanged -= UpdateDepth;
+            gm.OnGameOver -= ShowGameOver;
         }
     }
 
@@ -59,7 +59,36 @@ public class UIManager : MonoBehaviour
     {
         if (_livesText != null)
         {
-            _livesText.text = $"Lives: {lives}";
+            _livesText.text = $"x {Mathf.Max(0, lives)}";
         }
+    }
+
+    private void UpdateDepth(int depth)
+    {
+        if (_depthText != null)
+        {
+            _depthText.text = $"{depth}m";
+        }
+    }
+
+    private void ShowGameOver()
+    {
+        if (_gameOverPanel == null) return;
+
+        GameManager gm = GameManager.Instance;
+
+        if (_gameOverText != null)
+        {
+            string restartKey = gm.RestartBindingDisplay;
+            string restartLine = string.IsNullOrEmpty(restartKey) ? "" : $"\n\nPress {restartKey} to restart";
+
+            _gameOverText.text =
+                $"GAME OVER\n\n" +
+                $"Depth: {Mathf.FloorToInt(gm.MaxDepth)}m\n" +
+                $"Final Score: {gm.Score}" +
+                restartLine;
+        }
+
+        _gameOverPanel.SetActive(true);
     }
 }

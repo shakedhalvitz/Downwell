@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -14,16 +15,22 @@ public class GameManager : Singleton<GameManager>
 
     private int _score;
     private int _lives;
+    private float _maxDepth;
     private bool _gameOver;
     private bool _playerAlive;
 
     public int Score => _score;
     public int Lives => _lives;
+    public float MaxDepth => _maxDepth;
     public bool GameOver => _gameOver;
     public bool PlayerAlive => _playerAlive;
 
+    // Human-readable key for the restart action (e.g. "Space"), used by the Game Over screen
+    public string RestartBindingDisplay => _restartAction != null ? _restartAction.action.GetBindingDisplayString() : "";
+
     public event Action<int> OnScoreChanged;
     public event Action<int> OnLivesChanged;
+    public event Action<int> OnDepthChanged;
     public event Action OnGameStarted;
     public event Action OnGameOver;
     public event Action OnPlayerDied;
@@ -49,8 +56,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        // UI subscribes in their own Start, and script execution order
-        // between them is not guaranteed - so hold one frame before kicking the round off.
+        // Wait one frame to ensure all other scripts have subscribed to the events before starting
         StartCoroutine(StartGameNextFrame());
     }
 
@@ -65,10 +71,12 @@ public class GameManager : Singleton<GameManager>
         _gameOver = false;
         _playerAlive = true;
         _score = 0;
+        _maxDepth = 0f;
         _lives = _startingLives;
 
         OnScoreChanged?.Invoke(_score);
         OnLivesChanged?.Invoke(_lives);
+        OnDepthChanged?.Invoke(0);
         OnGameStarted?.Invoke();
     }
 
@@ -82,11 +90,8 @@ public class GameManager : Singleton<GameManager>
 
     public void RestartGame()
     {
-        CancelInvoke(nameof(RespawnPlayer));
-
-        // TODO: Clear Object Pools here later (Bullets, Enemies)
-
-        StartGame();
+        // Reloading the active scene cleanly resets all states, objects, and pools
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void AddScore(int pointsToAdd)
@@ -95,6 +100,26 @@ public class GameManager : Singleton<GameManager>
 
         _score += pointsToAdd;
         OnScoreChanged?.Invoke(_score);
+    }
+
+    public void AddLife()
+    {
+        if (_gameOver || !_playerAlive) return;
+
+        _lives++;
+        OnLivesChanged?.Invoke(_lives);
+    }
+
+    public void UpdateDepth(float playerY)
+    {
+        if (_gameOver || !_playerAlive) return;
+
+        float currentDepth = Mathf.Max(0, -playerY);
+        if (currentDepth > _maxDepth)
+        {
+            _maxDepth = currentDepth;
+            OnDepthChanged?.Invoke(Mathf.FloorToInt(_maxDepth));
+        }
     }
 
     public void OnPlayerHit()
@@ -107,11 +132,14 @@ public class GameManager : Singleton<GameManager>
         OnLivesChanged?.Invoke(_lives);
         OnPlayerDied?.Invoke();
 
-        // In the future, we will tell the PlayerController to play death animation here
-
         if (_lives <= 0)
         {
             _gameOver = true;
+
+            // Add the max depth achieved to the final score when the game is over
+            _score += Mathf.FloorToInt(_maxDepth);
+            OnScoreChanged?.Invoke(_score);
+
             OnGameOver?.Invoke();
         }
         else
@@ -126,6 +154,5 @@ public class GameManager : Singleton<GameManager>
 
         _playerAlive = true;
         OnPlayerRespawned?.Invoke();
-        // In the future, we will tell the PlayerController to reset position here
     }
 }

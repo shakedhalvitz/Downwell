@@ -4,6 +4,9 @@ using System;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class SlimeMonster : MonoBehaviour
 {
+    [Header("Score")]
+    [SerializeField] private int scoreValue = 3;
+
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private LayerMask groundLayer;
@@ -16,10 +19,16 @@ public class SlimeMonster : MonoBehaviour
     private int currentDirection = 1; // 1 for Right, -1 for Left
     private bool isDead = false;
 
+    public bool IsDead => isDead;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        // No friction so the slime slides smoothly across the separate platform tiles
+        rb.sharedMaterial = new PhysicsMaterial2D("SlimeNoFriction") { friction = 0f, bounciness = 0f };
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     /// <summary>
@@ -53,6 +62,9 @@ public class SlimeMonster : MonoBehaviour
     {
         if (groundDetectionPoint == null) return;
 
+        // Only check ledges while standing on ground - otherwise (spawning, falling) it flips every frame
+        if (!rb.IsTouchingLayers(groundLayer)) return;
+
         // Simple downward raycast to check if there is ground ahead
         RaycastHit2D groundInfo = Physics2D.Raycast(groundDetectionPoint.position, Vector2.down, 0.5f, groundLayer);
 
@@ -68,17 +80,10 @@ public class SlimeMonster : MonoBehaviour
         if (isDead) return;
 
         // Turn around if hitting a wall or another enemy
+        // (Player stomps are handled by PlayerController)
         if (collision.gameObject.CompareTag("Walls") || collision.gameObject.CompareTag("Enemy"))
         {
             FlipDirection();
-        }
-        // Handle Player Stomp (assuming player is above)
-        else if (collision.gameObject.CompareTag("Player"))
-        {
-            if (collision.GetContact(0).normal.y < -0.5f)
-            {
-                Die();
-            }
         }
     }
 
@@ -90,7 +95,8 @@ public class SlimeMonster : MonoBehaviour
 
     private void UpdateSpriteDirection()
     {
-        transform.localScale = new Vector3(currentDirection, 1, 1);
+        Vector3 scale = transform.localScale;
+        transform.localScale = new Vector3(Mathf.Abs(scale.x) * currentDirection, scale.y, scale.z);
     }
 
     public void Die()
@@ -98,6 +104,11 @@ public class SlimeMonster : MonoBehaviour
         if (isDead) return;
         isDead = true;
         rb.linearVelocity = Vector2.zero;
+
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.AddScore(scoreValue);
+        }
 
         animator.SetTrigger("Die");
     }

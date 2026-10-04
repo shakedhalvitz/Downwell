@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2000219359026353819}
   - component: {fileID: 8614098666807660557}
   - component: {fileID: 2113177196528425609}
+  - component: {fileID: 91017110640256321}
   m_Layer: 0
   m_Name: Heart
   m_TagString: CollectabaleObject
@@ -161,3 +162,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &91017110640256321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369599071040731036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f945c8b937645468bd6c55600dc552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectableObject
+  type: 2
+  valueAmount: 1

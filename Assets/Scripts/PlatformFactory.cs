@@ -232,6 +232,12 @@ public class PlatformFactory : MonoBehaviour
                         bat.Setup(releasedObj => pool.Release(releasedObj));
                     }
 
+                    CollectableObject collectable = newObj.GetComponent<CollectableObject>();
+                    if (collectable != null)
+                    {
+                        collectable.Setup(releasedObj => pool.Release(releasedObj));
+                    }
+
                     return;
                 }
             }

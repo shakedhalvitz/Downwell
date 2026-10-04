@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3493006532513301872}
   - component: {fileID: 2696798012823679325}
   - component: {fileID: 6694078878786650927}
+  - component: {fileID: 92749819720311661}
   m_Layer: 0
   m_Name: Coin
   m_TagString: CollectabaleObject
@@ -161,3 +162,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &92749819720311661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011974603818354607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f945c8b937645468bd6c55600dc552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectableObject
+  type: 0
+  valueAmount: 1

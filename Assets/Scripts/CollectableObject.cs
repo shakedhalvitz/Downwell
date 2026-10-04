@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class CollectableItem : MonoBehaviour
+public class CollectableObject : MonoBehaviour
 {
     // Defines the types of collectables available
     public enum ItemType { Coin, Diamond, Heart }
@@ -30,9 +30,20 @@ public class CollectableItem : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // TODO: Play sound based on type
-            // TODO: Notify GameManager to increase score or lives based on ItemType and valueAmount
+            if (GameManager.Instance != null)
+            {
+                if (type == ItemType.Heart)
+                {
+                    // Note: We will need to add this method to GameManager next
+                    GameManager.Instance.AddLife();
+                }
+                else
+                {
+                    GameManager.Instance.AddScore(valueAmount);
+                }
+            }
 
+            // TODO: Play sound based on type
             // Return the item to the pool instead of destroying it
             returnToPoolCallback?.Invoke(gameObject);
         }

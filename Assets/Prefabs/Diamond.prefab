@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1638168762586606906}
   - component: {fileID: 5976133853062755381}
   - component: {fileID: 6341449036501899275}
+  - component: {fileID: 9155542838158861}
   m_Layer: 0
   m_Name: Diamond
   m_TagString: CollectabaleObject
@@ -161,3 +162,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9155542838158861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830026485076436644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f945c8b937645468bd6c55600dc552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectableObject
+  type: 1
+  valueAmount: 5
