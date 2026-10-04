@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1db76041c178e43a1325cb02013416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeMonster
+  hitSound: {fileID: 8300000, guid: e93ee2c4c034e6f4c86ae07e48a1fe2f, type: 3}
   scoreValue: 3
   moveSpeed: 2
   groundLayer:

@@ -98,7 +98,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (isDead) return;
+        // Ignore input while dead or while the game is frozen (start menu)
+        if (isDead || Time.timeScale == 0f) return;
 
         if (GameManager.Instance != null)
         {

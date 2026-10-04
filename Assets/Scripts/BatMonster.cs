@@ -4,6 +4,10 @@ using System;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class BatMonster : MonoBehaviour
 {
+    [Header("Audio")]
+    [Tooltip("Played when this enemy is killed (stomped or shot)")]
+    [SerializeField] private AudioClip hitSound;
+
     [Header("Score")]
     [SerializeField] private int scoreValue = 5;
 
@@ -110,25 +114,13 @@ public class BatMonster : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (isDead) return;
-
-        // Bullet hit check (player stomps are handled by PlayerController)
-        if (collision.CompareTag("Bullet"))
-        {
-            if (collision.transform.position.y > transform.position.y + 0.2f)
-            {
-                Die();
-            }
-        }
-    }
-
     public void Die()
     {
         if (isDead) return;
         isDead = true;
         rb.linearVelocity = Vector2.zero;
+
+        AudioManager.Instance.PlaySfx(hitSound);
 
         if (GameManager.HasInstance)
         {

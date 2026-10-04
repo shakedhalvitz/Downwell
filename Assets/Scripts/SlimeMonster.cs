@@ -4,6 +4,10 @@ using System;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class SlimeMonster : MonoBehaviour
 {
+    [Header("Audio")]
+    [Tooltip("Played when this enemy is killed (stomped or shot)")]
+    [SerializeField] private AudioClip hitSound;
+
     [Header("Score")]
     [SerializeField] private int scoreValue = 3;
 
@@ -104,6 +108,8 @@ public class SlimeMonster : MonoBehaviour
         if (isDead) return;
         isDead = true;
         rb.linearVelocity = Vector2.zero;
+
+        AudioManager.Instance.PlaySfx(hitSound);
 
         if (GameManager.HasInstance)
         {

@@ -48,7 +48,18 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("BreakablePlatform"))
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            // Bullets are the single place that handles shooting enemies
+            SlimeMonster slime = collision.gameObject.GetComponent<SlimeMonster>();
+            if (slime != null) slime.Die();
+
+            BatMonster bat = collision.gameObject.GetComponent<BatMonster>();
+            if (bat != null) bat.Die();
+
+            Explode();
+        }
+        else if (collision.gameObject.CompareTag("BreakablePlatform"))
         {
             BreakablePlatform breakable = collision.gameObject.GetComponent<BreakablePlatform>();
             if (breakable != null)

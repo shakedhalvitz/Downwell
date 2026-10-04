@@ -176,3 +176,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectableObject
   type: 2
   valueAmount: 1
+  collectSound: {fileID: 0}

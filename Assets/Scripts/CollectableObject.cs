@@ -14,7 +14,8 @@ public class CollectableObject : MonoBehaviour
     [Tooltip("How much score or health this item gives")]
     public int valueAmount = 1;
 
-    // public AudioClip collectSound; // We will use this when we implement sounds
+    [Tooltip("Played when the player picks this item up")]
+    public AudioClip collectSound;
 
     private Action<GameObject> returnToPoolCallback;
 
@@ -43,7 +44,8 @@ public class CollectableObject : MonoBehaviour
                 }
             }
 
-            // TODO: Play sound based on type
+            AudioManager.Instance.PlaySfx(collectSound);
+
             // Return the item to the pool instead of destroying it
             returnToPoolCallback?.Invoke(gameObject);
         }

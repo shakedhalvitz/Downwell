@@ -10,6 +10,12 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int _startingLives = 3;
     [SerializeField] private float _respawnDelay = 2f;
 
+    [Header("Audio")]
+    [Tooltip("Played when the player loses a life but still has lives left")]
+    [SerializeField] private AudioClip _playerDeathSound;
+    [Tooltip("Played instead of the death sound when the last life is lost")]
+    [SerializeField] private AudioClip _gameOverSound;
+
     [Header("Input Actions")]
     [SerializeField] private InputActionReference _restartAction;
 
@@ -140,10 +146,12 @@ public class GameManager : Singleton<GameManager>
             _score += Mathf.FloorToInt(_maxDepth);
             OnScoreChanged?.Invoke(_score);
 
+            AudioManager.Instance.PlaySfx(_gameOverSound);
             OnGameOver?.Invoke();
         }
         else
         {
+            AudioManager.Instance.PlaySfx(_playerDeathSound);
             Invoke(nameof(RespawnPlayer), _respawnDelay);
         }
     }
