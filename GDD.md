@@ -29,6 +29,7 @@ The player controls a character falling endlessly down a vertically scrolling mi
 
 - **Primary reference:** *Downwell*. Taking: the core falling gameplay, the contextual jump/shoot button, and stomp/shoot combat. Not taking: the monochrome art style, the combo system, and weapon upgrades.
 - [**Downwell**](https://www.youtube.com/watch?v=kY83H8BdxhI) - Extended Gameplay Video
+- **Secondary reference:** Reverse Icy Tower - the unbreakable platforms layout was based on the Icy Tower flow.
 
 ---
 
@@ -81,8 +82,8 @@ stateDiagram-v2
 
 | Action | Keyboard (PC) | Touch (Mobile) |
 |---|---|---|
-| Move Left | A / Left Arrow | Left on-screen button (bottom left) |
-| Move Right | D / Right Arrow | Right on-screen button (bottom right) |
+| Move Left | Left Arrow | Left on-screen button (bottom left) |
+| Move Right | Right Arrow | Right on-screen button (bottom right) |
 | Jump (On Ground) | Space | Tap anywhere else on the screen |
 | Shoot (In Air) | Space | Tap anywhere else on the screen |
 
@@ -121,16 +122,21 @@ Enemies don't collide with each other (Physics 2D layer matrix).
 
 ---
 
-## 7. Art & Audio
+#### 6. Art & Audio
 
 | Asset | Variants / frames | Source & licence | Use |
 | ------ | ------ | ------ | ------ |
-| 2D Pixel Art Tilesets | Multiple tiles | Itch.io | Backgrounds, Platforms |
 | Hooded Protagonist | Sprite sheet (8 animations) | [**Penzilla**](https://penzilla.itch.io/hooded-protagonist) (Itch.io) - Free for non-commercial use, requires credit | Player character |
-| Enemy Sprites | Slime, Bat (idle + death) | Itch.io | Enemies |
-| Sound effects | Coin, diamond, enemy hit, player death, game over, shot, box break | TBD | SFX (`AudioManager`) |
+| Plague Town Tileset | Multiple tiles | [**Craftpix**](https://craftpix.net/freebies/free-plague-town-2d-platformer-vector-tileset/) - Free license | Walls, Unbreakable Floors |
+| Crate Spritesheet | Sprite sheet | [**Durchburch**](https://www.deviantart.com/durchburch/art/Crate-Spritesheet-863053804) (DeviantArt) - Free to use | Breakable boxes |
+| Glowing Ball & FX | Sprite sheet | [**LVGames**](https://lvgames.itch.io/free-glowing-ball-sprite-pixel-fx-rpg-maker-ready) (Itch.io) - Free to use | Bullets, Explosion animation |
+| Flying Bat Enemy | Sprite sheet | [**Segnah**](https://segnah.itch.io/flyng-enemy-pixel-art) (Itch.io) - Free to use | Flying Enemy |
+| Slime, Coins, Gems, Hearts | Various sprites | Itch.io (Various creators) - Free to use | Ground enemy, Collectables |
+| Game Background | 1 Image | [Imgur](https://imgur.com/1lSwR3h) / Pinterest | Background art |
+| Sound effects | Various clips | [**Freesound.org**](https://freesound.org) (Various creators) - CC0 / Free | SFX (`AudioManager`) |
 
-**Licence note:** The Hooded Protagonist asset is free for private/educational use as per the creator's terms, and credit is provided to Penzilla Design. For a public/commercial build, the required commercial fee would be paid.
+**Licence note:** All assets are used for private/educational purposes as per the creators' terms. Credits are provided to the respective creators on Itch.io, Craftpix, DeviantArt, and Freesound. For a public/commercial build, placeholder/unverified assets (like the Pinterest background) will be replaced with fully licensed art, and any required commercial fees for other assets would be paid.
+
 **Technical art rules:** Point (no filter) import, PPU 100. Sorting layers: Background → Decor → Wall → Platforms → Objects → Enemies → Player → UI.
 
 ![Player Character](Images/Player_SpriteSheet.png)
